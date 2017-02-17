@@ -1,4 +1,4 @@
-package com.geofeedia;
+package com.geofeedia.crosscloudqueue.main;
 
 /**
  * Hello world!
