@@ -1,13 +1,10 @@
-package com.geofeedia.crosscloudqueue.main;
+package com.geofeedia.crosscloudqueue.util;
 
 /**
  * Created by mchem on 3/15/2017.
  */
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Host;
-import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
-import static java.lang.System.out;
 /**
  * Class used for connecting to Cassandra database.
  */
@@ -27,13 +24,14 @@ public class CassandraConnector
     public void connect(final String node, final int port)
     {
         this.cluster = Cluster.builder().addContactPoint(node).withPort(port).build();
-        final Metadata metadata = cluster.getMetadata();
+
+ /*       final Metadata metadata = cluster.getMetadata();
         out.printf("Connected to cluster: %s\n", metadata.getClusterName());
         for (final Host host : metadata.getAllHosts())
         {
             out.printf("Datacenter: %s; Host: %s; Rack: %s\n",
                     host.getDatacenter(), host.getAddress(), host.getRack());
-        }
+        }*/
         session = cluster.connect();
     }
     /**
@@ -56,7 +54,7 @@ public class CassandraConnector
         final String ipAddress = args.length > 0 ? args[0] : "172.17.0.2";
         final int port = args.length > 1 ? Integer.parseInt(args[1]) : 9042;
         System.out.println("Connecting to IP Address " + ipAddress + ":" + port + "...");
-        client.connect(ipAddress, port);
+        client.connect("172.17.0.2", 9042);
         client.close();
     }
 }

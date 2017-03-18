@@ -1,49 +1,54 @@
 package com.geofeedia.crosscloudqueue.main;
 
-import redis.clients.jedis.Jedis;
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+
+import static java.util.Arrays.asList;
 
 /**
  * Hello world!
  *
  */
 public class App {
-    //final Logger logger = LoggerFactory.getLogger(App.class);
 
-/*
-    public static void main( String[] args ) {
-        connectToCassandra("test","172.17.0.2", "172.17.0.3","172.17.0.4");
-        //connectToRedis("127.0.0.1", 6379);
-    }
+    Integer one = 3;
+    String two = "Bob";
 
-    private static void connectToCassandra(String keyspace, String ...addresses) {
-        try{
-*/
-/*            Cluster cluster = Cluster.builder().addContactPoints(addresses).withClusterName("Test Cluster").build();
-            Session session = cluster.connect(keyspace);
-            session.execute("INSERT INTO test(id, name, city) VALUES (38, 'Jose', 'Fort Myers')");*//*
-
-Cluster cluster;
-Session session;
-
-cluster = Cluster.builder().addContactPoint("172.17.0.2").build();
-session = cluster.connect(keyspace);
-            System.out.println("Success");
-        }catch(Exception e){
-            System.out.printf("\"%s\"\n", e.getCause());
+    public Boolean connect(int status, String address) throws Exception {
+        if(status == 0){
+            return true;
+        }else{
+            Cluster cluster = Cluster.builder().addContactPoints(address).withClusterName("Test Cluster").build();
+            Session session = cluster.connect("test");
         }
 
+        return false;
     }
-*/
 
-    private static void connectToRedis(String hostname, Integer port) {
-        try {
-            Jedis jedis = new Jedis(hostname, port);
-            jedis.auth("");
-            jedis.connect();
-            jedis.configSet("timeout", "30");
-            System.out.println("Connected to Redis!");
-        }catch (Exception e){
-            System.err.printf("\"%s\"\n", e.getCause());
+    public Boolean isOnline(int status){
+        Boolean online = false;
+
+        if (status == 0){
+            online = true;
+        }
+
+        return online;
+    }
+
+    public Object[] check(Object... args){
+        if(asList(args).contains(one) && asList(args).contains(two)){
+            System.out.printf("\nObjects %s and %s are in database", one, two);
+            return args;
+        }else {
+            System.out.println("\nObjects are not in database");
+            return null;
         }
     }
+
+    /*public static Object[] format(Object... objs){
+        Integer x = 3, y = 4, z = 5;
+
+        return
+    }*/
 }
